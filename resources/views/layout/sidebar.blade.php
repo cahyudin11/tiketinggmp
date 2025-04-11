@@ -33,6 +33,16 @@
                 <i class="fa fa-ticket"></i> <span>Tiketing</span>
             </a>
         </li>
+        <li>
+            <a href="">
+                <i class="fa fa-archive"></i> <span>Permintaan Barang</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="fa fa-truck"></i> <span>Peminjaman Barang</span>
+            </a>
+        </li>
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-pie-chart"></i>
@@ -41,8 +51,8 @@
             </a>
             <ul class="treeview-menu">
                 <li><a href="{{ route('barang') }}"><i class="fa fa-circle-o"></i> Barang</a></li>
-                <li><a href=""><i class="fa fa-circle-o"></i> Divisi</a></li>
-                </li>
-            </ul>
+                <li><a href="{{ route('formdivisi') }}"><i class="fa fa-circle-o"></i> Divisi</a></li>
         </li>
+    </ul>
+    </li>
 </section>

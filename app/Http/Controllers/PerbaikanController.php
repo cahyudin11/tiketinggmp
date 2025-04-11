@@ -41,6 +41,32 @@ class PerbaikanController extends Controller
 
         $perbaikan->save();
 
+        $token = env('FONNTE_TOKEN');
+        $target = $request->kontak . '|a';
+        $pesan = "Halo {$request->nama},\n\n"
+            . "Pengajuan perbaikan Anda telah diterima.\n"
+            . "📅 Tanggal: {$request->tanggal}\n"
+            . "📝 Detail: {$request->detail}\n"
+            . "🎫 Kode Tiket: *{$kodeTiket}*\n\n"
+            . "Tim kami akan segera menindaklanjuti.";
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => [
+                'target' => $target,
+                'message' => $pesan,
+            ],
+            CURLOPT_HTTPHEADER => [
+                "Authorization: $token"
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
         return redirect()->back()->with('success', $kodeTiket);
     }
 
@@ -62,7 +88,7 @@ class PerbaikanController extends Controller
     {
         $perbaikan = PerbaikanModel::findOrFail($id);
         $perbaikan->delete();
-    
-        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+
+        return redirect()->back()->with('error', 'Data berhasil dihapus.');
     }
 }

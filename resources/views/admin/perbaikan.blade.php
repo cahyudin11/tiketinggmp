@@ -40,8 +40,11 @@
                               <td>{{ $item->divisi->nama_divisi }}</td>
                               <td>{{ $item->detail }}</td>
                               <td>{{ $item->kontak }}</td>
-                              <td text class="text-center">
-                                  <img src="{{ asset('storage/' . $item->photo) }}" alt="Foto" width="80">
+                              <td class="text-center">
+                                  <!-- Gambar Kecil yang Dapat Diklik -->
+                                  <a href="{{ asset('storage/' . $item->photo) }}" target="_blank">
+                                      <img src="{{ asset('storage/' . $item->photo) }}" alt="Foto" width="80">
+                                  </a>
                               </td>
                               <td>
                                   <form action="{{ route('admin.updateStatus', $item->id) }}" method="POST">
@@ -63,12 +66,13 @@
                                   </form>
                               </td>
                               <td>
-                                <form action="{{ route('perbaikan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                </form>
-                            </td>
+                                  <form action="{{ route('perbaikan.destroy', $item->id) }}" method="POST"
+                                      onsubmit="return confirm('Yakin ingin menghapus?')">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                  </form>
+                              </td>
 
                           </tr>
                       @endforeach

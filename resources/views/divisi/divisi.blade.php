@@ -2,17 +2,17 @@
 @section('judul')
     <section class="content-header">
         <h1>
-            Master Barang
+            Master Divisi
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Tiketing</li>
+            <li class="active">Divisi</li>
         </ol>
     </section>
 @endsection
 
 @section('isi')
-    <a href="{{ route('tambah') }}" class="btn btn-success mb-3">+ Tambah</a>
+    <a href="{{ route('divisi') }}" class="btn btn-success mb-3">+ Tambah</a>
     <div class="box">
         <div class="box-body">
             @if (session('success') || session('error'))
@@ -47,14 +47,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($barang as $item)
+                    @foreach ($divisi as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->nama_barang }}</td>
+                            <td>{{ $item->nama_divisi }}</td>
                             <td>
                                 <div style="display: flex; justify-content: center; gap: 5px;">
-                                    <a href="{{ route('editbarang', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('hapusbarang', $item->id) }}" method="POST"
+                                    <a href="{{ route('editdivisi', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <form action="{{ route('hapusdivisi', $item->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus?')">
                                         @csrf
                                         @method('DELETE')

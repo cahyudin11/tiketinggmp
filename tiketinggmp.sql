@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 12:15 PM
+-- Generation Time: Apr 11, 2025 at 06:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,7 +37,9 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama_barang`) VALUES
-(1, 'Mikrotik RB 750 r2');
+(16, 'Mikrotik RB750 r2'),
+(17, 'SSD VGEN'),
+(18, 'Kabel Printer');
 
 -- --------------------------------------------------------
 
@@ -79,7 +81,9 @@ CREATE TABLE `divisi` (
 --
 
 INSERT INTO `divisi` (`id`, `nama_divisi`) VALUES
-(1, 'HRD');
+(1, 'HRD'),
+(2, 'IT'),
+(4, 'PURCHASING');
 
 -- --------------------------------------------------------
 
@@ -216,7 +220,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('VfKbs3Ekair9FTLwMec6vWXKo31KQQzp569wEeoC', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWE83SUdCMkJ2aFdhRGFPV0VRMWJ0a2k3bWx3a2U1RGhkQ0xRODlyaCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90aWtldGluZyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1744365265);
+('Hx0iWkwWtiyacPT9A6xW5iQm3HHWTTNmSoSLY9Ca', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoielJFTm1TV2p2VlZTbVJHUzc0OWQ0T29hZm5FOVNvVjA2cEZ1MFZVWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9mb3JtZGl2aXNpIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1744386548);
 
 -- --------------------------------------------------------
 
@@ -241,7 +245,11 @@ CREATE TABLE `tiket` (
 --
 
 INSERT INTO `tiket` (`id`, `kode_tiket`, `tanggal`, `nama`, `divisi_id`, `detail`, `kontak`, `photo`, `status`) VALUES
-(28, 'TKT-67F8AF4A9A583-Uhyti', '2025-04-11', 'kusti', '1', 'asasasas', '089654963859', NULL, 'menunggu antrian');
+(28, 'TKT-67F8AF4A9A583-Uhyti', '2025-04-11', 'kusti', '1', 'asasasas', '089654963859', NULL, 'menunggu antrian'),
+(29, 'TKT-67F90FF6680A7-Zs5NY', '2025-04-11', 'cahyudin', '1', 'asasasa', '089654963859', NULL, 'menunggu antrian'),
+(30, 'TKT-67F910E924968-hXjUV', '2025-04-11', 'cahyudin', '1', 'eror printer', '089654963859', NULL, 'menunggu antrian'),
+(31, 'TKT-67F9361EA847C-tRryR', '2025-04-11', 'cahyudin', '2', 'eror cable printer', '089654963859', NULL, 'menunggu antrian'),
+(33, 'TKT-67F9399CC5768-fA2ut', '2025-04-11', 'cahyudin', '2', 'qswsw', '089654963859', NULL, 'menunggu antrian');
 
 -- --------------------------------------------------------
 
@@ -361,13 +369,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `divisi`
 --
 ALTER TABLE `divisi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -403,7 +411,7 @@ ALTER TABLE `permintaan`
 -- AUTO_INCREMENT for table `tiket`
 --
 ALTER TABLE `tiket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `users`

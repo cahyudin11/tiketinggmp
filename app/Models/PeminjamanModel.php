@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class tiketingModel extends Model
+class PeminjamanModel extends Model
 {
-    protected $table = 'permintaan';
+    protected $table = 'peminjaman';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
@@ -14,11 +14,12 @@ class tiketingModel extends Model
         'nama_barang',
         'keterangan',
         'quantity',
-        'barang_id',
+        'barang_id_peminjaman',
+        'status',
     ];
     public function barang()
     {
-        return $this->belongsTo(BarangModel::class, 'barang_id');
+        return $this->belongsTo(BarangModel::class, 'barang_id_peminjaman');
     }
     public function divisi()
     {

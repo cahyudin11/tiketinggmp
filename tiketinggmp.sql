@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 06:06 PM
+-- Generation Time: Apr 17, 2025 at 12:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `barang` (
   `id` int(11) NOT NULL,
-  `nama_barang` varchar(25) NOT NULL
+  `nama_barang` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -37,9 +37,18 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id`, `nama_barang`) VALUES
-(16, 'Mikrotik RB750 r2'),
+(16, 'MIKROTIK RB750 R2'),
 (17, 'SSD VGEN'),
-(18, 'Kabel Printer');
+(18, 'KABEL PRINTER'),
+(19, 'LAPTOP HP TOUCHSREEN'),
+(20, 'LAPTOP ASUS VIBOBOOK 14 INC'),
+(21, 'LAPTOP HP 14 BIASA'),
+(22, 'KABEL USB EXTENDER'),
+(23, 'MONITOR SAMSUNG 19 INC'),
+(24, 'MONITOR LG 19 INC'),
+(25, 'CPU PENTIUM GOLD G6405 RAM DDR4 8 GB SSD 256 SATA PSU 550 WAT CORSAIR CASE MSI'),
+(26, 'CPU PENTIUM GOLD G6405 RAM DDR4 4 GB SSD 256 SATA PSU 550 WAT CORSAIR CASE MSI'),
+(27, 'KEYBOARD MK120 SET');
 
 -- --------------------------------------------------------
 
@@ -83,7 +92,8 @@ CREATE TABLE `divisi` (
 INSERT INTO `divisi` (`id`, `nama_divisi`) VALUES
 (1, 'HRD'),
 (2, 'IT'),
-(4, 'PURCHASING');
+(4, 'PURCHASING'),
+(7, 'ACCOUNTING');
 
 -- --------------------------------------------------------
 
@@ -177,10 +187,24 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `peminjaman` (
   `id` int(11) NOT NULL,
-  `barang_id` varchar(25) NOT NULL,
+  `barang_id_peminjaman` varchar(25) NOT NULL,
   `dari` date NOT NULL,
-  `sampai` date NOT NULL
+  `sampai` date NOT NULL,
+  `nama` varchar(25) NOT NULL,
+  `tanggal` date NOT NULL,
+  `kontak` varchar(25) NOT NULL,
+  `kode_tiket` varchar(25) NOT NULL,
+  `divisi_id` varchar(25) NOT NULL,
+  `status` enum('menunggu antrian','dalam peminjaman','dikembalikan','ditolak') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `peminjaman`
+--
+
+INSERT INTO `peminjaman` (`id`, `barang_id_peminjaman`, `dari`, `sampai`, `nama`, `tanggal`, `kontak`, `kode_tiket`, `divisi_id`, `status`) VALUES
+(14, '17', '2025-04-17', '2025-04-18', 'cahyudin', '2025-04-17', '089654963859', 'TKT-68009B38B1D59-NtDT5', '2', 'menunggu antrian'),
+(15, '19', '2025-04-17', '2025-04-18', 'cahyudin', '2025-04-17', '089654963859', 'TKT-6800B1275D9C9-Ug72F', '2', 'dikembalikan');
 
 -- --------------------------------------------------------
 
@@ -190,15 +214,33 @@ CREATE TABLE `peminjaman` (
 
 CREATE TABLE `permintaan` (
   `id` int(11) NOT NULL,
+  `kode_tiket` varchar(25) NOT NULL,
   `tanggal` date NOT NULL,
   `nama` varchar(25) NOT NULL,
   `divisi_id` varchar(25) NOT NULL,
   `barang_id` varchar(25) NOT NULL,
   `keterangan` text NOT NULL,
   `quantity` int(25) NOT NULL,
-  `photo` varchar(25) DEFAULT NULL,
-  `kontak` varchar(25) NOT NULL
+  `kontak` varchar(25) NOT NULL,
+  `status` enum('menunggu antrian','sedang diajukan','barang datang','proses pemasangan','selesai') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `permintaan`
+--
+
+INSERT INTO `permintaan` (`id`, `kode_tiket`, `tanggal`, `nama`, `divisi_id`, `barang_id`, `keterangan`, `quantity`, `kontak`, `status`) VALUES
+(2, 'TKT-67FF2F85D3405-RpJ04', '2025-04-16', 'cahyudin', '2', '16', 'asas', 1, '089654963859', 'selesai'),
+(5, 'TKT-67FF68F51475A-zKBRd', '2025-04-16', 'kusti', '1', '16', 'asas', 1, '089654963859', 'menunggu antrian'),
+(6, 'TKT-67FF7BD7247CE-8E6Gy', '2025-04-16', 'kusti', '1', '16', 'asas', 1, '089654963859', 'menunggu antrian'),
+(7, 'TKT-67FF7D4C31243-PAW8j', '2025-04-16', 'kusti', '1', '16', 'asas', 1, '089654963859', 'menunggu antrian'),
+(8, 'TKT-67FF81255012C-ngeOH', '2025-04-16', 'kusti', '1', '16', 'asas', 1, '089654963859', 'menunggu antrian'),
+(9, 'TKT-67FF8176D14DB-LLrWh', '2025-04-16', 'kusti', '1', '16', 'asas', 1, '089654963859', 'menunggu antrian'),
+(11, 'TKT-680078B1B62A9-ybL7M', '2025-04-17', 'cahyudin', '2', '16', 'asas', 1, '089654963859', 'sedang diajukan'),
+(12, 'TKT-6800791728EAF-K4MY8', '2025-04-17', 'cahyudin', '2', '18', 'asas', 1, '089654963859', 'sedang diajukan'),
+(13, 'TKT-680079CAC528D-7SCuo', '2025-04-17', 'cahyudin', '2', '16', 'asasas', 1, '089654963859', 'sedang diajukan'),
+(15, 'TKT-6800D3A17C489-RvvQ4', '2025-04-17', 'kusti', '2', '22', 'untuk pa dadang', 1, '089654963859', 'sedang diajukan'),
+(16, 'TKT-6800D42BC00D8-yjO1k', '2025-04-17', 'rifky', '7', '17', 'komputer saya lag pisan', 1, '081224059415', 'selesai');
 
 -- --------------------------------------------------------
 
@@ -220,7 +262,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('Hx0iWkwWtiyacPT9A6xW5iQm3HHWTTNmSoSLY9Ca', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoielJFTm1TV2p2VlZTbVJHUzc0OWQ0T29hZm5FOVNvVjA2cEZ1MFZVWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9mb3JtZGl2aXNpIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1744386548);
+('3wG8H5kcW0B8HC1HnVFH8rriedsCs5ZDTxay4e8a', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUEtUWXJjb3g1TGNkNDcxN2liN2R6cTQ2NmN5cmUxY1hMUURvRWNKbSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wZXJtaW50YWFuIjt9fQ==', 1744885206);
 
 -- --------------------------------------------------------
 
@@ -245,11 +287,27 @@ CREATE TABLE `tiket` (
 --
 
 INSERT INTO `tiket` (`id`, `kode_tiket`, `tanggal`, `nama`, `divisi_id`, `detail`, `kontak`, `photo`, `status`) VALUES
-(28, 'TKT-67F8AF4A9A583-Uhyti', '2025-04-11', 'kusti', '1', 'asasasas', '089654963859', NULL, 'menunggu antrian'),
-(29, 'TKT-67F90FF6680A7-Zs5NY', '2025-04-11', 'cahyudin', '1', 'asasasa', '089654963859', NULL, 'menunggu antrian'),
-(30, 'TKT-67F910E924968-hXjUV', '2025-04-11', 'cahyudin', '1', 'eror printer', '089654963859', NULL, 'menunggu antrian'),
-(31, 'TKT-67F9361EA847C-tRryR', '2025-04-11', 'cahyudin', '2', 'eror cable printer', '089654963859', NULL, 'menunggu antrian'),
-(33, 'TKT-67F9399CC5768-fA2ut', '2025-04-11', 'cahyudin', '2', 'qswsw', '089654963859', NULL, 'menunggu antrian');
+(36, 'TKT-67F9C6F2D6ED0-m7Eit', '2025-04-12', 'cahyudin', '2', 'asasasasasasa', '089654963859', NULL, 'menunggu antrian'),
+(37, 'TKT-67F9C75B31BD5-JvzIm', '2025-04-12', 'cahyudin', '2', 'eror pada printer', '089654963859', NULL, 'menunggu antrian'),
+(38, 'TKT-67F9C8846F3D3-jBgQQ', '2025-04-12', 'cahyudin', '2', 'eror printer', '089654963859', NULL, 'menunggu antrian'),
+(39, 'TKT-67F9ED5C86C55-eBWkD', '2025-04-12', 'VANIA', '4', 'printer eror', '081316575369', NULL, 'menunggu antrian'),
+(40, 'TKT-67F9ED98C6E85-xkmfr', '2025-04-12', 'maya', '4', 'ing printer eror', '087827121703', NULL, 'menunggu antrian'),
+(41, 'TKT-67FF2E8C183AF-P6ZLv', '2025-04-16', 'kusti', '1', 'asasasas', '089654963859', NULL, 'menunggu antrian'),
+(42, 'TKT-67FF4C569D816-fi0dM', '2025-04-16', 'kusti', '4', 'eror printer', '089654963859', NULL, 'menunggu antrian'),
+(45, 'TKT-67FF671B90525-2atrS', '2025-04-16', 'cahyudin', '1', 'asasas', '089654963859', NULL, 'menunggu antrian'),
+(46, 'TKT-67FF68E308088-xXOjw', '2025-04-16', 'kusti', '1', 'asasas', '089654963859', NULL, 'menunggu antrian'),
+(47, 'TKT-67FF6BAC9B076-EAQGU', '2025-04-16', 'kusti', '1', 'asas', '089654963859', NULL, 'menunggu antrian'),
+(48, 'TKT-67FF6E392D1A5-TcDlU', '2025-04-16', 'kusti', '1', 'asasa', '089654963859', NULL, 'menunggu antrian'),
+(49, 'TKT-67FF72BA75A0F-xMPST', '2025-04-16', 'asasas', '1', 'asas', '089654963859', NULL, 'menunggu antrian'),
+(50, 'TKT-67FF766D9123D-TSGMH', '2025-04-16', 'kusti', '1', 'asasa', '089654963859', NULL, 'menunggu antrian'),
+(51, 'TKT-67FF7E6E41637-kDqBy', '2025-04-16', 'kusti', '1', 'asasas', '089654963859', NULL, 'menunggu antrian'),
+(52, 'TKT-67FF7ECAA0194-zjSuO', '2025-04-16', 'kusti', '2', 'asasas', '089654963859', NULL, 'menunggu antrian'),
+(53, 'TKT-67FF7FE915B86-z7v4c', '2025-04-16', 'kusti', '1', 'asasas', '089654963859', NULL, 'menunggu antrian'),
+(54, 'TKT-67FF81997ABE7-8po8r', '2025-04-16', 'cahyudin', '1', 'asasasas', '089654963859', NULL, 'menunggu antrian'),
+(55, 'TKT-680075BDD0A8C-anRu1', '2025-04-17', 'cahyudin', '1', 'tes perbaikan', '089654963859', NULL, 'menunggu antrian'),
+(56, 'TKT-68007926CB0AD-RwdQe', '2025-04-17', 'kusti', '2', 'sasasas', '089654963859', NULL, 'menunggu antrian'),
+(57, 'TKT-680079BC65E3F-ibysq', '2025-04-17', 'kusti', '1', 'asasasas', '089654963859', NULL, 'menunggu antrian'),
+(58, 'TKT-6800D5264474D-J2Anh', '2025-04-17', 'kusti', '4', 'eror printer', '089654963859', NULL, 'sedang dikerjakan');
 
 -- --------------------------------------------------------
 
@@ -265,7 +323,8 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `foto` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -369,13 +428,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `divisi`
 --
 ALTER TABLE `divisi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -399,19 +458,19 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `permintaan`
 --
 ALTER TABLE `permintaan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tiket`
 --
 ALTER TABLE `tiket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `users`

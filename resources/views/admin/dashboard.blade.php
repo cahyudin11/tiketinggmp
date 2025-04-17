@@ -15,55 +15,69 @@
       <div class="row">
           <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <div class="small-box bg-aqua">
-                  <div class="inner">
-                      <h3>150</h3>
-                      <p>New Orders</p>
-                  </div>
-                  <div class="icon">
-                      <i class="ion ion-bag"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-          </div><!-- ./col -->
-          <div class="col-lg-3 col-xs-6">
-              <!-- small box -->
               <div class="small-box bg-green">
                   <div class="inner">
-                      <h3>53<sup style="font-size: 20px">%</sup></h3>
-                      <p>Bounce Rate</p>
+                    <h3>{{ $totalPerbaikan }}</h3><sup style="font-size: 20px"></h3>
+                     
+                      <h4>Tiket</h4>
                   </div>
                   <div class="icon">
                       <i class="ion ion-stats-bars"></i>
                   </div>
-                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="{{ route('perbaikan') }}" class="small-box-footer">Tiketing <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+          </div><!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-blue">
+                  <div class="inner">
+                    <h3>{{ $totalPermintaan }}</h3><sup style="font-size: 20px"></h3>
+                      <h4>Permintaan</h4>
+                  </div>
+                  <div class="icon">
+                      <i class="ion-plus-circled"></i>
+                  </div>
+                  <a href="{{ route('permintaan') }}" class="small-box-footer">Permintaan Barang <i class="fa fa-arrow-circle-right"></i></a>
               </div>
           </div><!-- ./col -->
           <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-yellow">
                   <div class="inner">
-                      <h3>44</h3>
-                      <p>User Registrations</p>
+                    <h3>{{ $totalPeminjaman }}</h3><sup style="font-size: 20px"></h3>
+                      <h4>Peminjaman</h4>
                   </div>
                   <div class="icon">
-                      <i class="ion ion-person-add"></i>
+                      <i class="ion-shuffle"></i>
                   </div>
-                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="{{ route('peminjaman') }}" class="small-box-footer">Peminjaman Barang <i class="fa fa-arrow-circle-right"></i></a>
               </div>
           </div><!-- ./col -->
           <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <div class="small-box bg-red">
+              <div class="small-box bg-gray">
                   <div class="inner">
-                      <h3>65</h3>
-                      <p>Unique Visitors</p>
+                    <h3>{{ $totalBarang }}</h3><sup style="font-size: 20px"></h3>
+                      <h4>Barang</h4>
                   </div>
                   <div class="icon">
-                      <i class="ion ion-pie-graph"></i>
+                      <i class="ion-briefcase"></i>
                   </div>
-                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <a href="{{ route('barang') }}" class="small-box-footer">Barang <i class="fa fa-arrow-circle-right"></i></a>
               </div>
           </div><!-- ./col -->
-      </div><!-- /.row -->
+          <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-purple">
+                  <div class="inner">
+                    <h3>{{ $totalBarang }}</h3><sup style="font-size: 20px"></h3>
+                      <h4>Divisi</h4>
+                  </div>
+                  <div class="icon">
+                      <i class="ion-person-stalker"></i>
+                  </div>
+                  <a href="{{ route('formdivisi') }}" class="small-box-footer">Divisi <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+          </div><!-- ./col -->
+         
   @endsection

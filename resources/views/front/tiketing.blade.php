@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IT Ticketing</title>
+    <title>IT Tiketing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -51,7 +51,7 @@
                     <a class="nav-link" href="{{ route('form') }}">Pengajuan</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('tiketing') }}">Tracking</a>
+                    <a class="nav-link active" href="{{ route('tiketing') }}">Lacak</a>
                 </li>
             </ul>
 
@@ -66,56 +66,71 @@
                 <button type="submit">Lacak Status</button>
             </form>
 
-    
-            @if (isset($perbaikan))
+            @if (isset($data))
                 <hr>
                 <div class="card shadow-lg mt-4 p-4">
-                    <h4 class="text-center">Status Tiket: {{ $perbaikan->kode_tiket }}</h4>
+                    <h4 class="text-center">Status Tiket: {{ $data->kode_tiket }}</h4>
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <div class="status-icon mb-3">
-                                    @if ($perbaikan->status == 'selesai')
+                                    @if ($data->status == 'selesai')
                                         <i class="fas fa-check-circle fa-3x text-success"></i>
-                                    @elseif ($perbaikan->status == 'menunggu antrian')
+                                    @elseif ($data->status == 'menunggu antrian')
                                         <i class="fas fa-cogs fa-3x text-warning"></i>
-                                    @elseif ($perbaikan->status == 'ditolak')
+                                    @elseif ($data->status == 'ditolak')
                                         <i class="fas fa-times-circle fa-3x text-danger"></i>
-                                    @elseif ($perbaikan->status == 'sedang dikerjakan')
-                                        <i class="fas fa-times-circle fa-3x text-secondary"></i>
+                                    @elseif ($data->status == 'sedang dikerjakan')
+                                        <i class="fas fa-tools fa-3x text-info"></i>
                                     @endif
                                 </div>
                                 <div class="status-info mb-3">
                                     <p class="status-text fs-5">
                                         <span
-                                            class="badge bg-{{ $perbaikan->status == 'selesai'
+                                            class="badge bg-{{ $data->status == 'selesai'
                                                 ? 'success'
-                                                : ($perbaikan->status == 'menunggu antrian'
+                                                : ($data->status == 'menunggu antrian'
                                                     ? 'warning'
-                                                    : ($perbaikan->status == 'ditolak'
+                                                    : ($data->status == 'ditolak'
                                                         ? 'danger'
-                                                        : ($perbaikan->status == 'sedang dikerjakan'
-                                                            ? 'info'
-                                                            : 'secondary'))) }}">
-                                            {{ ucfirst($perbaikan->status) }}
+                                                        : 'info')) }}">
+                                            {{ ucfirst($data->status) }}
                                         </span>
                                     </p>
                                 </div>
+
                                 <div class="text-center">
-                                    <p><strong>Nama:</strong> {{ $perbaikan->nama }}</p>
-                                    <p><strong>Kontak:</strong> {{ $perbaikan->kontak }}</p>
+                                    <p><strong>Nama:</strong> {{ $data->nama }}</p>
+                                    <p><strong>Kontak:</strong> {{ $data->kontak }}</p>
+
+                                    @if ($jenis === 'perbaikan')
+                                        <p><strong>Detail:</strong> {{ $data->detail }}</p>
+                                    @elseif ($jenis === 'permintaan')
+                                        <p><strong>Barang:</strong> {{ $data->barang->nama_barang ?? '-' }}</p>
+                                        <p><strong>Jumlah:</strong> {{ $data->quantity }}</p>
+                                        <p><strong>Keterangan:</strong> {{ $data->keterangan }}</p>
+                                    @elseif ($jenis === 'peminjaman')
+                                        <p><strong>Barang yang dipinjam:</strong>
+                                            {{ $data->barang->nama_barang ?? '-' }}</p>
+                                        <p><strong>Tanggal Peminjaman:</strong> {{ $data->dari }}</p>
+                                        <p><strong>Tanggal Kembali:</strong> {{ $data->sampai }}</p>
+                                    @elseif ($jenis === 'peminjaman')
+                                        <p><strong>Barang yang dipinjam:</strong>
+                                            {{ $data->barang->nama_barang ?? '-' }}</p>
+                                        <p><strong>Tanggal Peminjaman:</strong> {{ $data->dari }}</p>
+                                        <p><strong>Tanggal Kembali:</strong> {{ $data->sampai }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             @endif
-        </div>
-    </div>
 
-    <footer class="text-center mt-5">
-        <p class="mb-0 py-3">&copy; 2025 PT.Gajah Mitra Paragon. All Rights Reserved.</p>
-    </footer>
+
+            <footer class="text-center mt-5">
+                <p class="mb-0 py-3">&copy; 2025 PT.Gajah Mitra Paragon. All Rights Reserved.</p>
+            </footer>
 
 </body>
 

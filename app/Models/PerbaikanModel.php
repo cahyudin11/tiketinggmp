@@ -25,4 +25,8 @@ class PerbaikanModel extends Model
     {
         return $this->belongsTo(DivisiModel::class, 'divisi_id');
     }
+    public function barang()
+    {
+        return $this->belongsTo(BarangModel::class, 'barang_id');
+    }
 }

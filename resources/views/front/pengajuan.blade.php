@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IT Ticketing</title>
+    <title>IT Tiketing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- JS Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -48,6 +48,7 @@
         }
     </style>
 
+    
     <div class="container mt-4">
         <div class="bg-white p-4 rounded shadow-lg mx-auto" style="max-width: 600px;">
             <div class="text-center mb-3">
@@ -62,7 +63,7 @@
                     <a class="nav-link active" href="#">Pengajuan</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('tiketing') }}">Tracking</a>
+                    <a class="nav-link" href="{{ route('tiketing') }}">Lacak</a>
                 </li>
             </ul>
 
@@ -103,7 +104,7 @@
 
                 <div class="form-group">
                     <label for="divisi_id">Pilih Divisi:</label>
-                    <select name="divisi_id" id="divisi_id" class="form-control" required>
+                    <select name="divisi_id" id="divisiSelect" class="form-control" required>
                         <option value="" disabled selected>Pilih Divisi</option>
                         @foreach ($divisi as $item)
                             <option value="{{ $item->id }}">{{ $item->nama_divisi }}</option>
@@ -125,8 +126,8 @@
                         <label class="form-check-label" for="perbaikan">Perbaikan</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="jenis_permintaan" value="Permintaan Barang"
-                            id="permintaanbarang">
+                        <input class="form-check-input" type="radio" name="jenis_permintaan"
+                            value="Permintaan Barang" id="permintaanbarang">
                         <label class="form-check-label" for="permintaanbarang">Permintaan Barang</label>
                     </div>
                     <div class="form-check">
@@ -143,8 +144,9 @@
                 </div>
 
                 <div id="permintaanbarang-form" style="display: none;">
-                    <label>Detail Barang *</label>
-                    <select name="barang_id" class="form-control mb-2">
+                    <label>Nama Barang *</label>
+                    <select id="barangPermintaanSelect" name="barang_id" class="form-control mb-2"
+                        style="width: 100%">
                         <option value="">-- Pilih Barang --</option>
                         @foreach ($barang as $p)
                             <option value="{{ $p->id }}">{{ $p->nama_barang }}</option>
@@ -157,6 +159,23 @@
                     <label>keterangan *</label>
                     <textarea name="keterangan" class="form-control" placeholder="Masukkan barang digunakan untuk keperluan apa"
                         rows="4"></textarea>
+                </div>
+                <div id="peminjaman-form" style="display: none;">
+                    <label>Nama Barang *</label>
+                    <select id="barangPeminjamanSelect" name="barang_id_peminjaman" class="form-control mb-2"
+                        style="width: 100%;">
+                        <option value="">-- Pilih Barang --</option>
+                        @foreach ($barang as $p)
+                            <option value="{{ $p->id }}">{{ $p->nama_barang }}</option>
+                        @endforeach
+                    </select>
+
+                    <label>Dari Tanggal *</label>
+                    <input type="date" name="dari" class="form-control mb-2" value="{{ date('Y-m-d') }}"
+                        required>
+
+                    <label>Sampai Tanggal *</label>
+                    <input type="date" name="sampai" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
@@ -174,17 +193,88 @@
     </footer>
 
 </body>
+<!-- jQuery & Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Inisialisasi Select2 -->
+<script>
+    $(document).ready(function() {
+        $('#barangPermintaanSelect').select2({
+            placeholder: "-- Pilih Barang --",
+            width: '100%'
+        });
+
+        $('#barangPeminjamanSelect').select2({
+            placeholder: "-- Pilih Barang --",
+            width: '100%'
+        });
+
+        $('#divisiSelect').select2({
+            placeholder: "Pilih Divisi",
+            width: '100%'
+        });
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const radios = document.querySelectorAll('input[name="jenis_permintaan"]');
         const perbaikanForm = document.getElementById('perbaikan-form');
         const permintaanForm = document.getElementById('permintaanbarang-form');
+        const detailTextarea = perbaikanForm.querySelector('textarea[name="detail"]');
+        const barangSelect = permintaanForm.querySelector('select[name="barang_id"]');
+        const quantityInput = permintaanForm.querySelector('input[name="quantity"]');
+        const keteranganTextarea = permintaanForm.querySelector('textarea[name="keterangan"]');
+        const peminjamanForm = document.getElementById('peminjaman-form');
+        const barangPinjamSelect = peminjamanForm.querySelector('select[name="barang_id_peminjaman"]');
+        const tanggalDari = peminjamanForm.querySelector('input[name="dari"]');
+        const tanggalSampai = peminjamanForm.querySelector('input[name="sampai"]');
 
         function showFormByValue(value) {
-            perbaikanForm.style.display = value === 'Perbaikan' ? 'block' : 'none';
-            permintaanForm.style.display = value === 'Permintaan Barang' ? 'block' : 'none';
-        }
+            if (value === 'Perbaikan') {
+                perbaikanForm.style.display = 'block';
+                permintaanForm.style.display = 'none';
+                peminjamanForm.style.display = 'none';
 
+                detailTextarea.setAttribute('required', 'required');
+                barangSelect.removeAttribute('required');
+                quantityInput.removeAttribute('required');
+                keteranganTextarea.removeAttribute('required');
+
+                barangPinjamSelect.removeAttribute('required');
+                tanggalDari.removeAttribute('required');
+                tanggalSampai.removeAttribute('required');
+
+            } else if (value === 'Permintaan Barang') {
+                perbaikanForm.style.display = 'none';
+                permintaanForm.style.display = 'block';
+                peminjamanForm.style.display = 'none';
+
+                detailTextarea.removeAttribute('required');
+                barangSelect.setAttribute('required', 'required');
+                quantityInput.setAttribute('required', 'required');
+                keteranganTextarea.setAttribute('required', 'required');
+
+                barangPinjamSelect.removeAttribute('required');
+                tanggalDari.removeAttribute('required');
+                tanggalSampai.removeAttribute('required');
+
+            } else if (value === 'Peminjaman') {
+                perbaikanForm.style.display = 'none';
+                permintaanForm.style.display = 'none';
+                peminjamanForm.style.display = 'block';
+
+                detailTextarea.removeAttribute('required');
+                barangSelect.removeAttribute('required');
+                quantityInput.removeAttribute('required');
+                keteranganTextarea.removeAttribute('required');
+
+                barangPinjamSelect.setAttribute('required');
+                tanggalDari.setAttribute('required');
+                tanggalSampai.setAttribute('required');
+            }
+        }
         radios.forEach(radio => {
             radio.addEventListener('change', () => {
                 showFormByValue(radio.value);
@@ -196,6 +286,7 @@
         });
     });
 </script>
+
 <script>
     @if (session('success'))
         const kodeTiket = '{{ session('success') }}';
@@ -215,5 +306,6 @@
         });
     });
 </script>
+
 
 </html>

@@ -13,4 +13,8 @@ class BarangModel extends Model
     protected $fillable = [
         'nama_barang',
     ];
+    public function permintaan()
+    {
+        return $this->hasMany(tiketingModel::class, 'barang_id');
+    }
 }

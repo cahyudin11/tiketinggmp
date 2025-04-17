@@ -34,15 +34,16 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ route('permintaan') }}">
                 <i class="fa fa-archive"></i> <span>Permintaan Barang</span>
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ route('peminjaman') }}">
                 <i class="fa fa-truck"></i> <span>Peminjaman Barang</span>
             </a>
         </li>
+        <li class="header">MASTER</li>
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-pie-chart"></i>

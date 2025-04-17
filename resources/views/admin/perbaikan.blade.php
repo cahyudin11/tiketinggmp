@@ -41,13 +41,17 @@
                               <td>{{ $item->detail }}</td>
                               <td>{{ $item->kontak }}</td>
                               <td class="text-center">
-                                  <!-- Gambar Kecil yang Dapat Diklik -->
-                                  <a href="{{ asset('storage/' . $item->photo) }}" target="_blank">
-                                      <img src="{{ asset('storage/' . $item->photo) }}" alt="Foto" width="80">
-                                  </a>
+                                  @if ($item->photo)
+                                      <!-- Gambar Kecil yang Dapat Diklik -->
+                                      <a href="{{ asset('storage/' . $item->photo) }}" target="_blank">
+                                          <img src="{{ asset('storage/' . $item->photo) }}" alt="Foto" width="80">
+                                      </a>
+                                  @else
+                                      <span class="text-muted">Tidak ada foto</span>
+                                  @endif
                               </td>
                               <td>
-                                  <form action="{{ route('admin.updateStatus', $item->id) }}" method="POST">
+                                  <form action="{{ route('admin.updateStatustik', $item->id) }}" method="POST">
                                       @csrf
                                       @method('PUT')
                                       <select name="status" class="form-select form-select-sm">
@@ -79,6 +83,7 @@
               </table>
           </div>
       </div>
+      
       <!-- DataTables -->
       <script src="{{ asset('template/plugins/datatables/jquery.dataTables.min.js') }}"></script>
       <script src="{{ asset('template/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
@@ -88,7 +93,7 @@
               $("#example1").DataTable();
               $('#example2').DataTable({
                   "paging": true,
-                  "lengthChange": true,
+                  "lengthChange": false,
                   "searching": false,
                   "ordering": true,
                   "info": true,

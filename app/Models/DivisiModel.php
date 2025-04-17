@@ -18,4 +18,5 @@ class DivisiModel extends Model
     {
         return $this->hasMany(PerbaikanModel::class, 'divisi_id');
     }
+   
 }

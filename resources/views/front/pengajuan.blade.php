@@ -48,7 +48,7 @@
         }
     </style>
 
-    
+
     <div class="container mt-4">
         <div class="bg-white p-4 rounded shadow-lg mx-auto" style="max-width: 600px;">
             <div class="text-center mb-3">
@@ -111,11 +111,13 @@
                         @endforeach
                     </select>
                 </div>
-
+                <br>
                 <div class="mb-3">
                     <label>Kontak Pemohon *</label>
                     <input type="text" name="kontak" class="form-control" placeholder="Contoh : 089654963859"
                         required>
+                    <small class="form-text text-muted">Masukkan nomor WhatsApp Anda untuk mengetahui info update
+                        terbaru!</small>
                 </div>
 
                 <div class="mb-3">
@@ -126,8 +128,8 @@
                         <label class="form-check-label" for="perbaikan">Perbaikan</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="jenis_permintaan"
-                            value="Permintaan Barang" id="permintaanbarang">
+                        <input class="form-check-input" type="radio" name="jenis_permintaan" value="Permintaan Barang"
+                            id="permintaanbarang">
                         <label class="form-check-label" for="permintaanbarang">Permintaan Barang</label>
                     </div>
                     <div class="form-check">

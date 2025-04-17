@@ -25,11 +25,11 @@ class PerbaikanController extends Controller
 
     public function store(Request $request)
     {
-       
+
         $kodeTiket = 'TKT-' . strtoupper(uniqid()) . '-' . Str::random(5);
         $jenis = $request->jenis_permintaan;
 
-        
+
         if ($jenis === 'Perbaikan') {
             $request->validate([
                 'tanggal' => 'required|date',
@@ -151,7 +151,7 @@ class PerbaikanController extends Controller
             . "📌 Status: {$status}\n\n"
             . "Tim kami akan segera menindaklanjuti.";
 
-    
+
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => 'https://api.fonnte.com/send',
@@ -183,7 +183,36 @@ class PerbaikanController extends Controller
         $perbaikan->status = $request->status;
         $perbaikan->save();
 
-        return redirect()->back()->with('success', 'Status berhasil diperbarui!');
+        $token = env('FONNTE_TOKEN');
+
+
+        $target = $perbaikan->kontak . '|a';
+
+        $pesan = "📢 *Notifikasi Status Perbaikan*\n\n"
+            . "Halo *{$perbaikan->nama}*,\n"
+            . "Status Perbaikan barang Anda telah diperbarui.\n"
+            . "🎫 Kode Tiket: {$perbaikan->kode_tiket}\n"
+            . "📌 Status Baru: *" . ucfirst($perbaikan->status) . "*\n\n"
+            . "Terima kasih telah menggunakan layanan kami.";
+
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => [
+                'target' => $target,
+                'message' => $pesan,
+            ],
+            CURLOPT_HTTPHEADER => [
+                "Authorization: $token"
+            ],
+        ]);
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui dan notifikasi dikirim!');
     }
     public function destroy($id)
     {

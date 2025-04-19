@@ -26,9 +26,8 @@
                         <th>Kontak</th>
                         <th>Dari</th>
                         <th>Sampai</th>
-                        <th>Approve To</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                      
 
                     </tr>
                 </thead>
@@ -44,10 +43,9 @@
                             <td>{{ $item->kontak }}</td>
                             <td>{{ $item->dari }}</td>
                             <td>{{ $item->sampai }}</td>
-                            <td>{{ $item->svp->name ?? '-' }}</td>
                           
                             <td>
-                                <form action="{{ route('admin.updateStatus', $item->id) }}" method="POST">
+                                <form action="{{ route('svp.updateStatus', $item->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <select name="status" class="form-select form-select-sm">
@@ -67,16 +65,6 @@
                                     <button type="submit" class="btn btn-sm btn-primary mt-1">Ubah</button>
                                 </form>
                             </td>
-                            
-                            <td>
-                                <form action="{{ route('hapuspeminjaman', $item->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                </form>
-                            </td>
-
                         </tr>
                     @endforeach
             </table>

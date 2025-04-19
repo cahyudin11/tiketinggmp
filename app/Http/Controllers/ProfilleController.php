@@ -27,16 +27,16 @@ class ProfilleController extends Controller
         $user->email = $request->email;
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
+           
             if ($user->foto && Storage::disk('public')->exists('foto/' . $user->foto)) {
                 Storage::disk('public')->delete('foto/' . $user->foto);
             }
 
-            // Simpan foto baru di storage/app/public/foto
+            
             $filename = time() . '.' . $request->file('foto')->getClientOriginalExtension();
             $request->file('foto')->storeAs('foto', $filename, 'public');
 
-            // Simpan hanya nama file ke database
+            
             $user->foto = $filename;
         }
 

@@ -24,36 +24,80 @@
     <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li>
-            <a href="{{ route('dashboard') }}">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            </a>
+            @auth
+                @if (Auth::user()->role === 'admin')
+            <li>
+                <a href="{{ route('dashboard') }}">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                </a>
+                @endif
+            @endauth
         </li>
         <li>
-            <a href="{{ route('perbaikan') }}">
-                <i class="fa fa-ticket"></i> <span>Tiketing</span>
-            </a>
-        </li>
+            @auth
+                @if (Auth::user()->role === 'svp')
+            <li>
+                <a href="{{ route('dashboardsvp') }}">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                </a>
+                @endif
+            @endauth
+        </li>       
         <li>
-            <a href="{{ route('permintaan') }}">
-                <i class="fa fa-archive"></i> <span>Permintaan Barang</span>
-            </a>
+            @auth
+                @if (Auth::user()->role === 'admin')
+            <li>
+                <a href="{{ route('perbaikan') }}">
+                    <i class="fa fa-ticket"></i> <span>Tiketing</span>
+                </a>
+            </li>
+            @endif
+        @endauth
         </li>
+        @auth
+            @if (Auth::user()->role === 'admin')
+                <li>
+                    <a href="{{ route('permintaan') }}">
+                        <i class="fa fa-archive"></i> <span>Permintaan Barang</span>
+                    </a>
+            @endif
+        @endauth
+        </li>
+        @auth
+        @if (Auth::user()->role === 'admin')
         <li>
             <a href="{{ route('peminjaman') }}">
                 <i class="fa fa-truck"></i> <span>Peminjaman Barang</span>
             </a>
+            @endif
+            @endauth
         </li>
-        <li class="header">MASTER</li>
-        <li class="treeview">
-            <a href="#">
-                <i class="fa fa-pie-chart"></i>
-                <span>Master</span>
-                <i class="fa fa-angle-left pull-right"></i>
+        </li>
+        @auth
+        @if (Auth::user()->role === 'svp')
+        <li>
+            <a href="{{ route('peminjamansvp') }}">
+                <i class="fa fa-truck"></i> <span>Peminjaman Barang</span>
             </a>
-            <ul class="treeview-menu">
-                <li><a href="{{ route('barang') }}"><i class="fa fa-circle-o"></i> Barang</a></li>
-                <li><a href="{{ route('formdivisi') }}"><i class="fa fa-circle-o"></i> Divisi</a></li>
+            @endif
+            @endauth
         </li>
-    </ul>
-    </li>
+        @auth
+            @if (Auth::user()->role === 'admin')
+                <li class="header">MASTER</li>
+                <li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-pie-chart"></i>
+                        <span>Master</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ route('barang') }}"><i class="fa fa-circle-o"></i> Barang</a></li>
+                        <li><a href="{{ route('formdivisi') }}"><i class="fa fa-circle-o"></i> Divisi</a></li>
+                </li>
+        </ul>
+        </li>
+        @endif
+    @endauth
 </section>

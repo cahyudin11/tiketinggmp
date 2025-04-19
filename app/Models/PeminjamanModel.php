@@ -25,4 +25,8 @@ class PeminjamanModel extends Model
     {
         return $this->belongsTo(DivisiModel::class, 'divisi_id');
     }
+    public function svp()
+{
+    return $this->belongsTo(User::class, 'svp_id');
+}
 }

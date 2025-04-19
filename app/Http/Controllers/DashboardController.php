@@ -23,6 +23,16 @@ class DashboardController extends Controller
             'totalPerbaikan',
             'totalBarang'
         ));
-        return view('admin.dashboard');
+    }
+    public function svp()
+    {
+        $totalPeminjaman = PeminjamanModel::count();
+     
+        return view('svp.dashboard', compact(
+            
+            'totalPeminjaman',
+           
+          
+        ));
     }
 }

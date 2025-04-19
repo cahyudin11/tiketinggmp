@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PeminjamanModel;
 use App\Models\PerbaikanModel;
-use App\Models\tiketingModel;
+use App\Models\TiketingModel;
 use Illuminate\Http\Request;
 
 class TiketingController extends Controller
@@ -13,7 +13,7 @@ class TiketingController extends Controller
     public function tiketing()
     {
 
-        $permintaan = tiketingModel::orderBy('id', 'desc')->get();
+        $permintaan = TiketingModel::orderBy('id', 'desc')->get();
         return view('front.tiketing', compact('permintaan'));
     }
     public function lacak(Request $request)

@@ -20,12 +20,17 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/', [PerbaikanController::class, 'index'])->name('form');
 Route::post('/permintaan', [PerbaikanController::class, 'store'])->name('permintaan');
 
+Route::get('/profil', [ProfilleController::class, 'edit'])->name('profil.edit');
+Route::put('/profil', [ProfilleController::class, 'update'])->name('profil.update');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 
 Route::get('/tiketing', [TiketingController::class, 'tiketing'])->name('tiketing');
 Route::post('/lacak', [TiketingController::class, 'lacak'])->name('lacak');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/perbaikan', [PerbaikanController::class, 'dataperbaikan'])->name('perbaikan');
@@ -54,9 +59,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/peminjaman', [PeminjamanController::class, 'datapeminjaman'])->name('peminjaman');
     Route::put('/admin/peminjaman/{id}/status', [PeminjamanController::class, 'updateStatus'])->name('admin.updateStatus');
     Route::delete('/hapuspeminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('hapuspeminjaman');
-
-    Route::get('/profil', [ProfilleController::class, 'edit'])->name('profil.edit');
-    Route::put('/profil', [ProfilleController::class, 'update'])->name('profil.update');
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+
+Route::middleware(['auth', 'role:svp'])->group(function () {
+    Route::get('/dashboardsvp', [DashboardController::class, 'svp'])->name('dashboardsvp');
+
+    Route::get('/peminjamansvp', [PeminjamanController::class, 'indexsvp'])->name('peminjamansvp');
+    Route::put('/svp/peminjaman/{id}/status', [PeminjamanController::class, 'updateStatusSvp'])->name('svp.updateStatus');
+});
+
+

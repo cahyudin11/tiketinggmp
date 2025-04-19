@@ -22,21 +22,34 @@ class AuthController extends Controller
             'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
         ]);
-
+    
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/dashboard');
+    
+            $user = Auth::user();
+    
+            if ($user->role === 'admin') {
+                return redirect()->route('dashboard');
+            } elseif ($user->role === 'svp') {
+                return redirect()->route('dashboardsvp');
+            } else {
+                return redirect()->route('home'); // fallback jika role tidak cocok
+            }
         }
+    
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ]);
     }
     public function logout(Request $request)
     {
-
+        
         Auth::logout();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+    
         return redirect('/');
     }
+    
 }

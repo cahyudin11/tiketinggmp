@@ -178,6 +178,14 @@
 
                     <label>Sampai Tanggal *</label>
                     <input type="date" name="sampai" class="form-control" required>
+
+                    <label>Pilih Pengguna Approve *</label>
+                    <select name="approve_user_id" class="form-control mb-2" required>
+                        <option value="">-- Pilih User --</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="mb-3">

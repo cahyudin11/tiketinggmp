@@ -7,6 +7,7 @@ use App\Models\DivisiModel;
 use App\Models\PeminjamanModel;
 use App\Models\PerbaikanModel;
 use App\Models\tiketingModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -19,8 +20,9 @@ class PerbaikanController extends Controller
         $tiketing = tiketingModel::all();
         $barang = BarangModel::all();
         $divisi = DivisiModel::all();
+        $users = User::whereIn('role', ['svp'])->get();
         session()->flash('show_dokumentasi', true);
-        return view('front.pengajuan', compact('barang', 'divisi', 'tiketing'));
+        return view('front.pengajuan', compact('barang', 'divisi', 'tiketing','users'));
     }
 
     public function store(Request $request)
@@ -93,7 +95,14 @@ class PerbaikanController extends Controller
                 'sampai' => 'required|date|after:dari',
                 'photo' => 'nullable|file|mimes:jpeg,png,jpg,gif',
             ]);
-
+        
+            
+            $svp = User::where('role', 'svp')->first();  
+        
+            if (!$svp) {
+                return redirect()->back()->with('error', 'SVP tidak ditemukan');
+            }
+        
             $peminjaman = new PeminjamanModel();
             $peminjaman->tanggal = $request->tanggal;
             $peminjaman->nama = $request->nama;
@@ -104,11 +113,12 @@ class PerbaikanController extends Controller
             $peminjaman->sampai = $request->sampai;
             $peminjaman->kode_tiket = $kodeTiket;
             $peminjaman->status = 'menunggu antrian';
-
+            $peminjaman->svp_id = $svp->id; 
+        
             if ($request->hasFile('photo')) {
                 $peminjaman->photo = $request->file('photo')->store('permintaan_foto', 'public');
             }
-
+        
             $peminjaman->save();
         }
 
@@ -127,7 +137,7 @@ class PerbaikanController extends Controller
             $status = 'menunggu antrian';
         }
 
-        $token = env('FONNTE_TOKEN');
+        $token = config('services.fonnte.token');
         $target = $request->kontak . '|a';
 
         $pesan = "Halo {$request->nama},\n\n"
@@ -183,8 +193,7 @@ class PerbaikanController extends Controller
         $perbaikan->status = $request->status;
         $perbaikan->save();
 
-        $token = env('FONNTE_TOKEN');
-
+        $token = config('services.fonnte.token');
 
         $target = $perbaikan->kontak . '|a';
 

@@ -21,7 +21,7 @@ class PermintaanController extends Controller
         $permintaan->save();
     
        
-        $token = env('FONNTE_TOKEN');
+        $token = config('services.fonnte.token');
     
         
         $target = $permintaan->kontak . '|a'; 

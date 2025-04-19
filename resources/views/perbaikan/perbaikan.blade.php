@@ -12,6 +12,11 @@
   @endsection
 
   @section('isi')
+      <form id="exportForm" action="{{ route('exportperbaikan') }}" method="POST" target="_blank">
+          @csrf
+          <input type="hidden" name="data" id="exportData">
+          <button type="submit" class="btn btn-danger mb-3">Export PDF</button>
+      </form>
       <div class="box">
           <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
@@ -83,21 +88,45 @@
               </table>
           </div>
       </div>
-      
+
       <!-- DataTables -->
       <script src="{{ asset('template/plugins/datatables/jquery.dataTables.min.js') }}"></script>
       <script src="{{ asset('template/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
       <!-- page script -->
       <script>
           $(function() {
-              $("#example1").DataTable();
-              $('#example2').DataTable({
-                  "paging": true,
-                  "lengthChange": false,
-                  "searching": false,
-                  "ordering": true,
-                  "info": true,
-                  "autoWidth": false
+              let table = $("#example1").DataTable(); // Inisialisasi DataTable
+
+              // Event saat form export disubmit
+              $('#exportForm').on('submit', function(e) {
+                  e.preventDefault(); // Mencegah submit biasa
+
+                  // Ambil data yang sedang ditampilkan di DataTable (yang difilter)
+                  var rows = table.rows({
+                      search: 'applied'
+                  }).nodes();
+                  var cleanData = [];
+
+                  rows.each(function(row) {
+                      var rowData = [];
+                      $(row).find('td').each(function(index, td) {
+                          // Jika kolom status, ambil nilai yang terpilih dari dropdown
+                          if (index == 8) { // Kolom ke-8 (index ke-7) adalah kolom status
+                              var status = $(td).find('select')
+                                  .val(); // Ambil nilai yang dipilih dari select
+                              rowData.push(status); // Menyimpan status yang dipilih
+                          } else {
+                              rowData.push($(td).text().trim()); // Ambil teks selain status
+                          }
+                      });
+                      cleanData.push(rowData); // Menyimpan data setiap row
+                  });
+
+                  // Isi input hidden dengan data yang sudah diproses
+                  $('#exportData').val(JSON.stringify(cleanData));
+
+                  // Submit form setelah data diisi
+                  this.submit();
               });
           });
       </script>

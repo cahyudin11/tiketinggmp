@@ -23,6 +23,9 @@ Route::post('/permintaan', [PerbaikanController::class, 'store'])->name('permint
 Route::get('/profil', [ProfilleController::class, 'edit'])->name('profil.edit');
 Route::put('/profil', [ProfilleController::class, 'update'])->name('profil.update');
 
+
+
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
@@ -59,6 +62,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/peminjaman', [PeminjamanController::class, 'datapeminjaman'])->name('peminjaman');
     Route::put('/admin/peminjaman/{id}/status', [PeminjamanController::class, 'updateStatus'])->name('admin.updateStatus');
     Route::delete('/hapuspeminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('hapuspeminjaman');
+
+    Route::post('/perbaikan/export', [PerbaikanController::class, 'exportPdf'])->name('exportperbaikan');
 });
 
 
@@ -68,5 +73,3 @@ Route::middleware(['auth', 'role:svp'])->group(function () {
     Route::get('/peminjamansvp', [PeminjamanController::class, 'indexsvp'])->name('peminjamansvp');
     Route::put('/svp/peminjaman/{id}/status', [PeminjamanController::class, 'updateStatusSvp'])->name('svp.updateStatus');
 });
-
-

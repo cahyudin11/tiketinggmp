@@ -19,13 +19,13 @@ class PermintaanController extends Controller
         $permintaan = tiketingModel::findOrFail($id);
         $permintaan->status = $request->status;
         $permintaan->save();
-    
-       
+
+
         $token = config('services.fonnte.token');
-    
-        
-        $target = $permintaan->kontak . '|a'; 
-    
+
+
+        $target = $permintaan->kontak . '|a';
+
         $pesan = "📢 *Notifikasi Status Permintaan*\n\n"
             . "Halo *{$permintaan->nama}*,\n"
             . "Status peminjaman barang Anda telah diperbarui.\n"
@@ -33,8 +33,8 @@ class PermintaanController extends Controller
             . "🎫 Kode Tiket: {$permintaan->kode_tiket}\n"
             . "📌 Status Baru: *" . ucfirst($permintaan->status) . "*\n\n"
             . "Terima kasih telah menggunakan layanan kami.";
-    
-        
+
+
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => 'https://api.fonnte.com/send',
@@ -50,10 +50,10 @@ class PermintaanController extends Controller
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
-    
+
         return redirect()->back()->with('success', 'Status berhasil diperbarui dan notifikasi dikirim!');
     }
-    
+
     public function destroy($id)
     {
         $permintaan = tiketingModel::findOrFail($id);

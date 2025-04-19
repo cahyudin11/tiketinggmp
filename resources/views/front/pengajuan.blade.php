@@ -240,8 +240,11 @@
         const barangPinjamSelect = peminjamanForm.querySelector('select[name="barang_id_peminjaman"]');
         const tanggalDari = peminjamanForm.querySelector('input[name="dari"]');
         const tanggalSampai = peminjamanForm.querySelector('input[name="sampai"]');
+        const approveUserSelect = peminjamanForm.querySelector(
+            'select[name="approve_user_id"]');
 
         function showFormByValue(value) {
+
             if (value === 'Perbaikan') {
                 perbaikanForm.style.display = 'block';
                 permintaanForm.style.display = 'none';
@@ -251,10 +254,12 @@
                 barangSelect.removeAttribute('required');
                 quantityInput.removeAttribute('required');
                 keteranganTextarea.removeAttribute('required');
+                approveUserSelect.removeAttribute('required');
 
                 barangPinjamSelect.removeAttribute('required');
                 tanggalDari.removeAttribute('required');
                 tanggalSampai.removeAttribute('required');
+
 
             } else if (value === 'Permintaan Barang') {
                 perbaikanForm.style.display = 'none';
@@ -265,10 +270,12 @@
                 barangSelect.setAttribute('required', 'required');
                 quantityInput.setAttribute('required', 'required');
                 keteranganTextarea.setAttribute('required', 'required');
+                approveUserSelect.removeAttribute('required');
 
                 barangPinjamSelect.removeAttribute('required');
                 tanggalDari.removeAttribute('required');
                 tanggalSampai.removeAttribute('required');
+
 
             } else if (value === 'Peminjaman') {
                 perbaikanForm.style.display = 'none';
@@ -279,12 +286,14 @@
                 barangSelect.removeAttribute('required');
                 quantityInput.removeAttribute('required');
                 keteranganTextarea.removeAttribute('required');
+                approveUserSelect.setAttribute('required', 'required');
 
-                barangPinjamSelect.setAttribute('required');
-                tanggalDari.setAttribute('required');
-                tanggalSampai.setAttribute('required');
+                barangPinjamSelect.setAttribute('required', 'required');
+                tanggalDari.setAttribute('required', 'required');
+                tanggalSampai.setAttribute('required', 'required');
             }
         }
+
         radios.forEach(radio => {
             radio.addEventListener('change', () => {
                 showFormByValue(radio.value);

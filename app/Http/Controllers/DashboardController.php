@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $totalPeminjaman = PeminjamanModel::count();
         $totalPerbaikan  = PerbaikanModel::count();
         $totalBarang     = BarangModel::count();
-    
+
         return view('admin.dashboard', compact(
             'totalPermintaan',
             'totalPeminjaman',
@@ -27,12 +27,12 @@ class DashboardController extends Controller
     public function svp()
     {
         $totalPeminjaman = PeminjamanModel::count();
-     
+
         return view('svp.dashboard', compact(
-            
+
             'totalPeminjaman',
-           
-          
+
+
         ));
     }
 }

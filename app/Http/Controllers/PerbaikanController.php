@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\BarangModel;
 use App\Models\DivisiModel;
-use App\Models\PeminjamanModel;
-use App\Models\PerbaikanModel;
-use App\Models\tiketingModel;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\tiketingModel;
+use App\Models\PerbaikanModel;
+use App\Models\PeminjamanModel;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
 
 class PerbaikanController extends Controller
 {
@@ -22,7 +24,7 @@ class PerbaikanController extends Controller
         $divisi = DivisiModel::all();
         $users = User::whereIn('role', ['svp'])->get();
         session()->flash('show_dokumentasi', true);
-        return view('front.pengajuan', compact('barang', 'divisi', 'tiketing','users'));
+        return view('front.pengajuan', compact('barang', 'divisi', 'tiketing', 'users'));
     }
 
     public function store(Request $request)
@@ -95,14 +97,14 @@ class PerbaikanController extends Controller
                 'sampai' => 'required|date|after:dari',
                 'photo' => 'nullable|file|mimes:jpeg,png,jpg,gif',
             ]);
-        
-            
-            $svp = User::where('role', 'svp')->first();  
-        
+
+
+            $svp = User::where('role', 'svp')->first();
+
             if (!$svp) {
                 return redirect()->back()->with('error', 'SVP tidak ditemukan');
             }
-        
+
             $peminjaman = new PeminjamanModel();
             $peminjaman->tanggal = $request->tanggal;
             $peminjaman->nama = $request->nama;
@@ -113,12 +115,12 @@ class PerbaikanController extends Controller
             $peminjaman->sampai = $request->sampai;
             $peminjaman->kode_tiket = $kodeTiket;
             $peminjaman->status = 'menunggu antrian';
-            $peminjaman->svp_id = $svp->id; 
-        
+            $peminjaman->svp_id = $svp->id;
+
             if ($request->hasFile('photo')) {
                 $peminjaman->photo = $request->file('photo')->store('permintaan_foto', 'public');
             }
-        
+
             $peminjaman->save();
         }
 
@@ -183,8 +185,8 @@ class PerbaikanController extends Controller
 
     public function dataperbaikan()
     {
-        $perbaikan = PerbaikanModel::all();
-        return view('admin.perbaikan', compact('perbaikan'));
+        $perbaikan = PerbaikanModel::orderBy('id', 'desc')->get();
+        return view('perbaikan.perbaikan', compact('perbaikan'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -229,5 +231,12 @@ class PerbaikanController extends Controller
         $perbaikan->delete();
 
         return redirect()->back()->with('error', 'Data berhasil dihapus.');
+    }
+    public function exportPdf(Request $request)
+    {
+
+        $data = json_decode($request->data, true);
+        $pdf = FacadePdf::loadView('perbaikan.export', compact('data'));
+        return $pdf->download('perbaikan.pdf');
     }
 }

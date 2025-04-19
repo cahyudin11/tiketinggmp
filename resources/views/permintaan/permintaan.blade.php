@@ -24,7 +24,7 @@
                         <th>Divisi</th>
                         <th>Barang</th>
                         <th>Quantity</th>
-                        <th>Kontak</th>                      
+                        <th>Kontak</th>
                         <th>Keterangan</th>
                         <th>Status</th>
                         <th>Aksi</th>
@@ -48,13 +48,16 @@
                                     @csrf
                                     @method('PUT')
                                     <select name="status" class="form-select form-select-sm">
-                                        <option value="sedang diajukan" {{ $item->status == 'sedang diajukan' ? 'selected' : '' }}>
+                                        <option value="sedang diajukan"
+                                            {{ $item->status == 'sedang diajukan' ? 'selected' : '' }}>
                                             Sedang Diajukan
                                         </option>
-                                        <option value="barang datang" {{ $item->status == 'barang datang' ? 'selected' : '' }}>
+                                        <option value="barang datang"
+                                            {{ $item->status == 'barang datang' ? 'selected' : '' }}>
                                             Barang Datang
                                         </option>
-                                        <option value="proses pemasangan" {{ $item->status == 'proses pemasangan' ? 'selected' : '' }}>
+                                        <option value="proses pemasangan"
+                                            {{ $item->status == 'proses pemasangan' ? 'selected' : '' }}>
                                             Proses Pemasangan
                                         </option>
                                         <option value="selesai" {{ $item->status == 'selesai' ? 'selected' : '' }}>
@@ -64,7 +67,7 @@
                                     <button type="submit" class="btn btn-sm btn-primary mt-1">Ubah</button>
                                 </form>
                             </td>
-                            
+
                             <td>
                                 <form action="{{ route('hapuspermintaan', $item->id) }}" method="POST"
                                     onsubmit="return confirm('Yakin ingin menghapus?')">
